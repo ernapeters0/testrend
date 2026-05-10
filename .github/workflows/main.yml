@@ -1,0 +1,26 @@
+name: Download Cloudflared Binary
+
+on:
+  workflow_dispatch:  # allows manual trigger
+  schedule:
+    - cron: '0 0 * * 0'  # optional: every Sunday to update binary
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Download latest Cloudflared binary
+        run: |
+          curl -L -o cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+          chmod +x cloudflared
+
+      - name: Commit & push to repo
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions
+          author_email: github-actions@github.com
+          message: "Update cloudflared binary"
+          add: "cloudflared"
