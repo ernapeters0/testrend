@@ -18,9 +18,8 @@ jobs:
           chmod +x cloudflared
 
       - name: Commit & push to repo
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: github-actions
-          author_email: github-actions@github.com
-          message: "Update cloudflared binary"
-          add: "cloudflared"
+        run: git add .
+      - name: Commit change to repo
+        run: git -c user.email="${{ secrets.EMAIL }}" -c user.name="${{ secrets.USERNAME }}" commit -am "Add 1st file again"
+      - name: Push change to repo
+        run: git push origin main
